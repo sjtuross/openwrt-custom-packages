@@ -261,9 +261,12 @@ msgstr "Hotplug ifup"
 msgid "INFO: MWAN not running"
 msgstr "信息：MWAN 没有运行"
 
+msgid "IPset SRC"
+msgstr "来源IPset"
+
 #: applications/luci-app-mwan3/luasrc/model/cbi/mwan/ruleconfig.lua:65
 msgid "IPset"
-msgstr "IPset"
+msgstr "目标IPset"
 
 #: applications/luci-app-mwan3/luasrc/model/cbi/mwan/interfaceconfig.lua:34
 msgid "IPv4"
@@ -467,6 +470,9 @@ msgstr "跃点数"
 #: applications/luci-app-mwan3/luasrc/controller/mwan3.lua:190
 msgid "Missing both IP rules for interface %s"
 msgstr "缺少接口 %s 的两条 IP 规则"
+
+msgid "Name of IPset source rule."
+msgstr "匹配来源 IPset 规则列表名称。"
 
 #: applications/luci-app-mwan3/luasrc/model/cbi/mwan/ruleconfig.lua:66
 msgid ""

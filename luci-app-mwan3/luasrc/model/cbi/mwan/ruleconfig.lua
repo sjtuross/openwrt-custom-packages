@@ -62,6 +62,13 @@ o = s:option(Value, "timeout", translate("Sticky timeout"),
 	translate("Seconds. Acceptable values: 1-1000000. Defaults to 600 if not set"))
 o.datatype = "range(1, 1000000)"
 
+o = s:option(Value, "ipset_src", translate("IPset SRC"),
+	translate("Name of IPset source rule."))
+o:value("", translate("-- Please choose --"))
+for _, z in ipairs(ipsets) do
+	o:value(z)
+end
+
 o = s:option(Value, "ipset", translate("IPset"),
 	translate("Name of IPset rule. Requires IPset rule in /etc/dnsmasq.conf (eg \"ipset=/youtube.com/youtube\")"))
 o:value("", translate("-- Please choose --"))

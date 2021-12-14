@@ -726,6 +726,7 @@ mwan3_set_user_iptables_rule()
 	config_get sticky "$1" sticky 0
 	config_get timeout "$1" timeout 600
 	config_get ipset "$1" ipset
+	config_get ipset_src "$1" ipset_src
 	config_get proto "$1" proto all
 	config_get src_ip "$1" src_ip
 	config_get src_iface "$1" src_iface
@@ -761,6 +762,7 @@ mwan3_set_user_iptables_rule()
 	[ -z "$dest_ip" ] && unset dest_ip
 	[ -z "$src_ip" ] && unset src_ip
 	[ -z "$ipset" ] && unset ipset
+	[ -z "$ipset_src" ] && unset ipset_src
 	[ -z "$src_port" ] && unset src_port
 	[ -z "$dest_port" ] && unset dest_port
 	if [ "$proto" != 'tcp' ] && [ "$proto" != 'udp' ]; then
@@ -781,6 +783,10 @@ mwan3_set_user_iptables_rule()
 
 	if [ -n "$ipset" ]; then
 		ipset="-m set --match-set $ipset dst"
+	fi
+
+	if [ -n "$ipset_src" ]; then
+		ipset_src="-m set --match-set $ipset_src src"
 	fi
 
 	if [ -z "$use_policy" ]; then
@@ -842,6 +848,7 @@ mwan3_set_user_iptables_rule()
 				  ${src_dev:+-i} $src_dev \
 				  ${dest_ip:+-d} $dest_ip \
 				  $ipset \
+				  $ipset_src \
 				  ${src_port:+-m} ${src_port:+multiport} ${src_port:+--sports} $src_port \
 				  ${dest_port:+-m} ${dest_port:+multiport} ${dest_port:+--dports} $dest_port \
 				  -m mark --mark 0/$MMX_MASK \
@@ -855,6 +862,7 @@ mwan3_set_user_iptables_rule()
 			  ${src_dev:+-i} $src_dev \
 			  ${dest_ip:+-d} $dest_ip \
 			  $ipset \
+			  $ipset_src \
 			  ${src_port:+-m} ${src_port:+multiport} ${src_port:+--sports} $src_port \
 			  ${dest_port:+-m} ${dest_port:+multiport} ${dest_port:+--dports} $dest_port \
 			  -m mark --mark 0/$MMX_MASK \

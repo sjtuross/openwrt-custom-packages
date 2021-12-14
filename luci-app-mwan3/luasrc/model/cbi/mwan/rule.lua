@@ -100,6 +100,18 @@ function proto.cfgvalue(self, s)
 	return self.map:get(s, "proto") or "all"
 end
 
+ipset_src = mwan_rule:option(DummyValue, "ipset_src", translate("IPset SRC"))
+ipset_src.rawhtml = true
+function ipset_src.cfgvalue(self, s)
+	return self.map:get(s, "ipset_src") or "&#8212;"
+end
+
+ipset = mwan_rule:option(DummyValue, "ipset", translate("IPset"))
+ipset.rawhtml = true
+function ipset.cfgvalue(self, s)
+	return self.map:get(s, "ipset") or "&#8212;"
+end
+
 use_policy = mwan_rule:option(DummyValue, "use_policy", translate("Policy assigned"))
 use_policy.rawhtml = true
 function use_policy.cfgvalue(self, s)
