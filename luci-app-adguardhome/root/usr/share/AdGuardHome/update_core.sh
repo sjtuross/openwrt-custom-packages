@@ -1,4 +1,5 @@
 #!/bin/bash
+
 PATH="/usr/sbin:/usr/bin:/sbin:/bin"
 binpath=$(uci get AdGuardHome.AdGuardHome.binpath)
 if [ -z "$binpath" ]; then
@@ -9,7 +10,6 @@ mkdir -p ${binpath%/*}
 upxflag=$(uci get AdGuardHome.AdGuardHome.upxflag 2>/dev/null)
 
 check_if_already_running(){
-    sleep 1
 	running_tasks="$(ps |grep "AdGuardHome" |grep "update_core" |grep -v "grep" |awk '{print $1}' |wc -l)"
 	[ "${running_tasks}" -gt "2" ] && echo -e "\nA task is already running."  && EXIT 2
 }
@@ -131,21 +131,21 @@ doupdate_core(){
 	Arch="amd64"
 	;;
 	"mipsel")
-	Arch="mipsle"
-	;;
+		Arch="mipsle"
+		;;
 	"mips64el")
-	Arch="mips64le"
-	Arch="mipsle"
-	echo -e "mips64el use $Arch may have bug" 
-	;;
+		Arch="mips64le"
+		Arch="mipsle"
+		echo -e "mips64el use $Arch may have bug"
+		;;
 	"mips")
-	Arch="mips"
-	;;
+		Arch="mips"
+		;;
 	"mips64")
-	Arch="mips64"
-	Arch="mips"
-	echo -e "mips64 use $Arch may have bug" 
-	;;
+		Arch="mips64"
+		Arch="mips"
+		echo -e "mips64 use $Arch may have bug"
+		;;
 	"arm")
 	Arch="arm"
 	;;

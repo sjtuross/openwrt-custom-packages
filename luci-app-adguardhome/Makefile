@@ -1,5 +1,3 @@
-# Copyright (C) 2018-2019 Lienol
-#
 # This is free software, licensed under the Apache License, Version 2.0 .
 #
 
@@ -7,7 +5,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-adguardhome
 PKG_VERSION:=1.8
-PKG_RELEASE:=11
+PKG_RELEASE:=12
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 
@@ -20,35 +18,29 @@ define Package/luci-app-adguardhome
 	TITLE:=LuCI app for adguardhome
 	PKG_MAINTAINER:=<https://github.com/rufengsuixing/luci-app-adguardhome>
 	PKGARCH:=all
-	DEPENDS:=+!wget&&!curl:wget
+	DEPENDS:=+ca-certs +curl +wget-ssl
 endef
 
-define Package/luci-app-adguardhome/description
-	LuCI support for adguardhome
+LUCI_DESCRIPTION:=LuCI support for AdGuardHome
+LUCI_DEPENDS:=+PACKAGE_$(PKG_NAME)_INCLUDE_binary:AdGuardHome
+
+define Package/$(PKG_NAME)/config
+config PACKAGE_$(PKG_NAME)_INCLUDE_binary
+	bool "Include Binary File"
+	default y
 endef
 
-define Build/Prepare
-endef
-
-define Build/Compile
-endef
+PKG_CONFIG_DEPENDS:= CONFIG_PACKAGE_$(PKG_NAME)_INCLUDE_binary
 
 define Package/luci-app-adguardhome/conffiles
 /usr/share/AdGuardHome/links.txt
 /etc/config/AdGuardHome
 endef
 
-define Package/luci-app-adguardhome/install
-    $(INSTALL_DIR) $(1)/usr/lib/lua/luci
-	cp -pR ./luasrc/* $(1)/usr/lib/lua/luci
-	$(INSTALL_DIR) $(1)/
-	cp -pR ./root/* $(1)/
-	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/i18n
-	po2lmo ./po/zh_Hans/AdGuardHome.po $(1)/usr/lib/lua/luci/i18n/AdGuardHome.zh-cn.lmo
-endef
 
 define Package/luci-app-adguardhome/postinst
 #!/bin/sh
+	chmod 755 /usr/share/AdGuardHome/*
 	/etc/init.d/AdGuardHome enable >/dev/null 2>&1
 	enable=$(uci get AdGuardHome.AdGuardHome.enabled 2>/dev/null)
 	if [ "$enable" == "1" ]; then
@@ -72,4 +64,6 @@ fi
 exit 0
 endef
 
-$(eval $(call BuildPackage,luci-app-adguardhome))
+include $(TOPDIR)/feeds/luci/luci.mk
+
+# call BuildPackage - OpenWrt buildroot signature
