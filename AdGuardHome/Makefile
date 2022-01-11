@@ -13,7 +13,7 @@ PKG_RELEASE:=1
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=v$(PKG_VERSION)
 PKG_SOURCE_URL:=https://github.com/AdguardTeam/AdGuardHome
-PKG_MIRROR_HASH:=37b36410efb577e4bc6b2c7984c18c18d8eea6cdf7d73eee85768fbfa07168d6
+PKG_MIRROR_HASH:=e736e6c27bccce9a791d9b4972409d32182e3cfdcc2706d9c5b7ff7f7ff6794d
 
 PKG_LICENSE:=GPL-3.0-only
 PKG_LICENSE_FILES:=LICENSE.txt
@@ -47,10 +47,6 @@ define Package/AdGuardHome
 	TITLE:=Network-wide ads and trackers blocking DNS server
 	URL:=https://github.com/AdguardTeam/AdGuardHome
 	DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle
-endef
-
-define Package/AdGuardHome/conffiles
-/etc/adguardhome.yaml
 endef
 
 define Package/AdGuardHome/description
@@ -89,8 +85,6 @@ define Package/AdGuardHome/install
 	$(call GoPackage/Package/Install/Bin,$(PKG_INSTALL_DIR))
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(GO_PKG_BUILD_BIN_DIR)/AdGuardHome $(1)/usr/bin/AdGuardHome
-	$(INSTALL_DIR) $(1)/etc
-	$(CP) -r ./files/etc $(1)/etc
 endef
 
 $(eval $(call GoBinPackage,AdGuardHome))
