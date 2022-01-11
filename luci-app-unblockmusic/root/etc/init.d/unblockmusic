@@ -1,6 +1,6 @@
 #!/bin/sh /etc/rc.common
 
-START=97
+START=99
 STOP=10
 
 NAME=unblockmusic
@@ -119,7 +119,6 @@ del_rule(){
 	ipset -X music_https 2>/dev/null
 	
 	rm -f /tmp/dnsmasq.d/dnsmasq-163.conf
-	/etc/init.d/dnsmasq reload >/dev/null 2>&1
 }
 
 set_firewall(){
@@ -134,7 +133,6 @@ ipset=/apm3.music.163.com/music
 ipset=/clientlog.music.163.com/music
 ipset=/clientlog3.music.163.com/music
 	EOF
-	/etc/init.d/dnsmasq reload >/dev/null 2>&1
 	
 	add_rule
 	
@@ -155,6 +153,12 @@ del_cron()
 {
 	sed -i '/update_core.sh/d' $CRON_FILE
 	/etc/init.d/cron restart
+}
+
+boot()
+{
+    sleep 10
+    start
 }
 
 start()
