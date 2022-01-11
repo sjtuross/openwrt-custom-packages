@@ -163,10 +163,24 @@ firstconnect() {
 		config_get STATUS $INTERFACE initial_state "online"
 	fi
 
-	if ! network_is_up $true_iface || [ -z "$DEVICE" ]; then
-		disabled
-		return
-	fi
+    if [ -z "$DEVICE" ]; then
+            for i in $(seq 1 50)
+            do
+                    LOG debug "firstconnect: wait $INTERFACE/$true_iface ($DEVICE) for $i second(s)."
+                    sleep 1
+                    if [ ! network_is_up $true_iface ]; then
+                            continue
+                    else
+                            LOG debug "firstconnect: $INTERFACE/$true_iface ($DEVICE) seems up successfully."
+                            break
+                    fi
+            done
+            if [ ! network_is_up $true_iface ]; then
+                    LOG debug "firstconnect: waited $INTERFACE/$true_iface ($DEVICE) for 50 seconds, give up."
+                    disabled
+                    return
+            fi
+    fi
 
 	mwan3_get_src_ip SRC_IP $INTERFACE
 
