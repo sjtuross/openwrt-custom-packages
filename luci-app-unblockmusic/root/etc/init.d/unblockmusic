@@ -157,7 +157,7 @@ del_cron()
 
 boot()
 {
-    sleep 10
+    sleep 20
     start
 }
 
@@ -217,4 +217,24 @@ stop()
 	
 	del_rule
 	del_cron
+}
+
+disable() {
+	rm -f "$IPKG_INSTROOT"/etc/rc.d/S??zzz_${NAME}
+	rm -f "$IPKG_INSTROOT"/etc/rc.d/K??zzz_${NAME}
+}
+
+enable() {
+	err=1
+	[ "$START" ] && \
+		ln -sf "../init.d/${NAME}" "$IPKG_INSTROOT/etc/rc.d/S${START}zzz_${NAME}" && \
+		err=0
+	[ "$STOP" ] && \
+		ln -sf "../init.d/${NAME}" "$IPKG_INSTROOT/etc/rc.d/K${STOP}zzz_${NAME}" && \
+		err=0
+	return $err
+}
+
+enabled() {
+	[ -x "$IPKG_INSTROOT/etc/rc.d/S${START}zzz_${NAME}" ]
 }
