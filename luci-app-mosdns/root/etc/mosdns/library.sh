@@ -1,4 +1,4 @@
-#!/bin/echo Warning:this is a library should be sourced!
+#!/bin/bash -e
 bakdns() {
 	if [ "$1" == "0" ]; then
 		echo "119.29.29.29"
@@ -8,14 +8,14 @@ bakdns() {
 }
 
 exist() {
-  command -v "$1" >/dev/null &>/dev/null
+  command -v "$1" >/dev/null 2>&1
 }
 
 getdat() {
   if exist curl; then
-    curl -fSLo "$TMPDIR/$1" "https://gh.404delivr.workers.dev/https://github.com/QiuSimons/openwrt-mos/raw/master/luci-app-mosdns/root/etc/mosdns/$1"
+    curl -fSLo "$TMPDIR/$1" "https://gh.404delivr.workers.dev/https://github.com/QiuSimons/openwrt-mos/raw/master/dat/$1"
   else
-    wget "https://gh.404delivr.workers.dev/https://github.com/QiuSimons/openwrt-mos/raw/master/luci-app-mosdns/root/etc/mosdns/$1" -nv -O "$TMPDIR/$1"
+    wget "https://gh.404delivr.workers.dev/https://github.com/QiuSimons/openwrt-mos/raw/master/dat/$1" -nv -O "$TMPDIR/$1"
   fi
 }
 
